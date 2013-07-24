@@ -1,0 +1,42 @@
+function getCurrentUserTargetAudience(){
+	var targetAudience = 'salaried-associate';
+
+	if ( userAttributes['ua.job_family'] == 'AREAC' || userAttributes['ua.job_family'] == 'AM' || userAttributes['ua.job_family'] == 'EXEC' || userAttributes['ua.job_family'] == 'RGM' || userAttributes['ua.job_family'] == 'DIR')
+		targetAudience = 'salaried-associate';
+	else if ( userAttributes['ua.job_family'] == 'CREW')
+		targetAudience = 'team-member';
+	else if ( userAttributes['ua.job_family'] == 'TMLEAD')
+		targetAudience = 'shift-supervisor';
+	else if ( userAttributes['ua.job_family'] == 'TMLEAD')
+		targetAudience = 'shift-supervisor';
+	else if ( userAttributes['ua.job_family'] == 'TMLEAD' &&  userAttributes['ua.home_state'] == CA)
+		targetAudience = 'shift-supervisor-california';
+
+	return targetAudience;
+}
+
+function getCurrentUserState(){
+	var currentUserState = '';
+	currentUserState = userAttributes['ua.home_state'];
+
+	return currentUserState;
+}
+
+function personalizeLinks(){
+	var $contentWithVersions = jQuery('.site-nav a, .directory-content a').filter('[data-default-content-shift-supervisor],[data-default-content-salaried-associate],[data-default-content-team-member],[data-default-content-team-member],[data-default-content-salaried-inactive],[data-default-content-shift-supervisor-california]');
+
+	function replaceDefaultLinksWithPersonalizedLinks(targetAudience){
+		$contentWithVersions.each(function(){
+			var newDefaultContent = jQuery(this).attr('data-default-content-' + targetAudience);
+			jQuery(this).attr('href',newDefaultContent);
+		});
+	}
+
+	if ($contentWithVersions.length > 0) {
+		replaceDefaultLinksWithPersonalizedLinks(getCurrentUserTargetAudience());
+	}
+
+}
+jQuery(document).ready(function(){
+personalizeLinks();
+});
