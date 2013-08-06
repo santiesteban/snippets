@@ -1,0 +1,19 @@
+function joinGivenNamesAndLastNames(givenNames,lastNames) {
+	var givenNamesArray = givenNames.split(',');
+	var lastNamesArray = lastNames.split(',');
+	var joinedNames ='';
+	for (var i = 0; i < givenNamesArray.length ; i++) {
+		if (i < givenNamesArray.length - 2)
+			joinedNames += givenNamesArray[i] + ' ' + lastNamesArray[i] + ', '; 
+		else if (i < givenNamesArray.length - 1)
+			joinedNames += givenNamesArray[i] + ' ' + lastNamesArray[i] + ' and '; // the second to last
+		else
+			joinedNames += givenNamesArray[i] + ' ' + lastNamesArray[i]; // and the last one
+	}
+	return joinedNames;
+}
+
+// Take a comma separated list of author given names and a comma separated list of author last names, make them pretty and then append them to the content-metadata section
+var joinedAuthorNames = joinGivenNamesAndLastNames('[Property context="current" type="content" format="givenName" field="authors"]','[Property context="current" type="content" format="sn" field="authors"]');
+console.log(joinedAuthorNames);
+jQuery('#content-metadata').append(' by ' + joinedAuthorNames);
